@@ -4,19 +4,23 @@ project(tsf_unity)
 
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 find_package(TinySoundFont REQUIRED)
+find_package(ezaudio REQUIRED)
 
-
-add_library(tsf_unity SHARED tsf_unity.h tsf_unity.cpp ez_audio.h)
-
-source_group(SDL FILES ${SDL_COMMON_SRC})
-
-target_compile_definitions(tsf_unity PRIVATE -DBUILD_TSF_UNITY)
-target_link_libraries(tsf_unity PRIVATE TinySoundFont::TinySoundFont)
-target_include_directories(tsf_unity PRIVATE ${sdl_dir}/include ${sdl_dir}/src)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(MACOS TRUE)
+endif()
 
 if (WIN32)
-    target_link_libraries(tsf_unity PRIVATE setupapi.lib winmm.lib imm32.lib version.lib)
+    set(platform_libs setupapi.lib winmm.lib imm32.lib version.lib)
+elseif(MACOS)
+    set(platform_libs "-framework AudioToolbox")
 endif()
+
+add_library(tsf_unity SHARED tsf_unity.h tsf_unity.cpp)
+
+target_link_libraries(tsf_unity PRIVATE TinySoundFont::TinySoundFont ezaudio::ezaudio ${platform_libs})
+target_include_directories(tsf_unity PRIVATE ${sdl_dir}/include )
+target_compile_definitions(tsf_unity PRIVATE -DBUILD_TSF_UNITY)
 
 add_executable(tsf_unity_test tsf_unity_test.cpp)
 target_link_libraries(tsf_unity_test tsf_unity)

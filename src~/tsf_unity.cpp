@@ -4,7 +4,7 @@
 #include <tsf.h>
 
 #define EZAUDIO_IMPLEMENTATION
-#include "ez_audio.h"
+#include "ezaudio/ezaudio.h"
 
 #include <mutex>
 
@@ -23,22 +23,23 @@ struct TsfUnity {
 	std::mutex mutex;
 };
 
-static void tsf_unity_audio_callback(void* buffer, uint32_t buffer_size, uint32_t sample_count, void* user_data)
+static uint32_t tsf_unity_audio_callback(void* buffer, uint32_t buffer_size, uint32_t sample_count, void* user_data)
 {
 	TsfUnity* context = reinterpret_cast<TsfUnity*>(user_data);
 
 	std::lock_guard<std::mutex>(context->mutex);
 	tsf_render_float(context->soundfont, reinterpret_cast<float*>(buffer), sample_count, 0);
+
+	return buffer_size;
 }
 
 TsfUnity* tsf_unity_create(tsf* tsf)
 {
-	ez_audio_init();
 
 	TsfUnity* tsf_unity = new TsfUnity();
 	tsf_unity->soundfont = tsf;
 
-	tiny_audio_params params;
+	ez_audio_params params;
 	ez_audio_init_params(&params);
 
 	params.frequency = 44100;
