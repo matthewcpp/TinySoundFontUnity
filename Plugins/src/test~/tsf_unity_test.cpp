@@ -4,23 +4,24 @@
 #include <thread>
 #include <random>
 #include <array>
+#include <string>
+
+#define STR(x) #x
+#define TO_STR(x) STR(x)
 
 int main(int argc, char** argv) {
 
-	if (argc < 2) {
-		std::cout << "Usage: ./tsf_unity_test /path/to/soundfont.sf2" << std::endl;
-		return 1;
-	}
-
 	std::random_device rd;
 	std::mt19937 gen(rd());
+    
+    std::string soundfont_path = TO_STR(SOUNDFONT_PATH);
 
 	for (int i = 0; i < 5; i++)
 	{
-		TsfUnity* tsf_unity = tsf_unity_load_from_file(argv[1]);
+        TsfUnity* tsf_unity = tsf_unity_load_from_file(soundfont_path.c_str());
 
 		if (!tsf_unity) {
-			std::cout << "Failed to load: " << argv[1] << std::endl;
+			std::cout << "Failed to load: " << soundfont_path << std::endl;
 			return 1;
 		}
 

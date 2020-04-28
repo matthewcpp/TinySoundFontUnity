@@ -1,10 +1,10 @@
 #include "tsf_unity.h"
 
 #define TSF_IMPLEMENTATION
-#include <tsf.h>
+#include "tsf.h"
 
 #define EZAUDIO_IMPLEMENTATION
-#include "ezaudio/ezaudio.h"
+#include "ezaudio.h"
 
 #include <mutex>
 

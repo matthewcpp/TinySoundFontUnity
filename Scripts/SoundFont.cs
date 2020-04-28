@@ -15,13 +15,13 @@ namespace TsfUnity
 
         public void LoadFromFile(string filename)
         {
-            tsf = Native.tsf_unity_load_from_file(filename);
+            tsf = Plugin.tsf_unity_load_from_file(filename);
             Init();
         }
 
         public void LoadFromMemory(byte[] data)
         {
-            tsf = Native.tsf_unity_load_from_memory(data, data.Length);
+            tsf = Plugin.tsf_unity_load_from_memory(data, data.Length);
             Init();
         }
 
@@ -30,34 +30,34 @@ namespace TsfUnity
             if (tsf == IntPtr.Zero)
                 throw new TsfException("Unable to load file");
 
-            presets = new string[Native.tsf_unity_get_preset_count(tsf)];
+            presets = new string[Plugin.tsf_unity_get_preset_count(tsf)];
 
             for (int i = 0; i < presets.Length; i++)
-                presets[i] = Marshal.PtrToStringAnsi(Native.tsf_unity_get_preset_name(tsf, i));
+                presets[i] = Marshal.PtrToStringAnsi(Plugin.tsf_unity_get_preset_name(tsf, i));
 
             onLoaded?.Invoke();
         }
 
         public void NoteOn(int presetIndex, int key, float velocity)
         {
-            Native.tsf_unity_note_on(tsf, presetIndex, key, velocity);
+            Plugin.tsf_unity_note_on(tsf, presetIndex, key, velocity);
         }
 
         public void NoteOff(int presetIndex, int key)
         {
-            Native.tsf_unity_note_off(tsf, presetIndex, key);
+            Plugin.tsf_unity_note_off(tsf, presetIndex, key);
         }
 
         public void AllNotesOff()
         {
-            Native.tsf_unity_all_notes_off(tsf);
+            Plugin.tsf_unity_all_notes_off(tsf);
         }
 
         public void Close()
         {
             if (tsf != IntPtr.Zero)
             {
-                Native.tsf_unity_close(tsf);
+                Plugin.tsf_unity_close(tsf);
                 tsf = IntPtr.Zero;
             }
         }
