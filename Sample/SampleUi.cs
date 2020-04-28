@@ -33,5 +33,15 @@ namespace TsfUnity.Example
         {
             controller.preset = presetSelector.value;
         }
+
+        public void OnButtonDown()
+        {
+            this.soundfont.soundfont.NoteOn(controller.preset, 60, 1.0f);
+        }
+
+        public void OnButtonUp()
+        {
+            this.soundfont.soundfont.NoteOff(controller.preset, 60);
+        }
     }
 }
