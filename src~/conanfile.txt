@@ -1,6 +1,6 @@
 [requires]
 TinySoundFont/21c07c0@matthewcpp/master
-ezaudio/d743d34@matthewcpp/master
+ezaudio/0e982f4@matthewcpp/master 
 
 [generators]
 cmake_find_package
