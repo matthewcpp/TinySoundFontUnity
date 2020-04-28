@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
 		tsf_unity_note_off(tsf_unity, random_preset_index, middle_c);
 
 		tsf_unity_close(tsf_unity);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 
 	return 0;

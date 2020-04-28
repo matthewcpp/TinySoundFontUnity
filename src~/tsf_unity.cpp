@@ -9,15 +9,6 @@
 #include <mutex>
 
 struct TsfUnity {
-	TsfUnity() {}
-	~TsfUnity() {
-		if (soundfont)
-			tsf_close(soundfont);
-
-		if (audio)
-			ez_audio_destroy(audio);
-	}
-
 	tsf* soundfont = nullptr;
 	ez_audio_session* audio = nullptr;
 	std::mutex mutex;
@@ -80,6 +71,13 @@ TsfUnity* tsf_unity_load_from_memory(uint8_t* data, int32_t size)
 
 void tsf_unity_close(TsfUnity* context)
 {
+    if (context->audio)
+        ez_audio_destroy(context->audio);
+    
+    if (context->soundfont){
+        tsf_close(context->soundfont);
+    }
+    
 	delete context;
 }
 
