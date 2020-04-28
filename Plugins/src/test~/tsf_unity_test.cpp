@@ -4,6 +4,7 @@
 #include <thread>
 #include <random>
 #include <array>
+#include <string>
 
 #define STR(x) #x
 #define TO_STR(x) STR(x)
